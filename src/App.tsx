@@ -1,3 +1,4 @@
+import { DataTable } from "./components/DataTable";
 import { Dropzone } from "./components/Dropzone";
 import { QueryEditor } from "./components/QueryEditor";
 import { TableList } from "./components/TableList";
@@ -28,6 +29,7 @@ function App() {
   			disabled= {false}
 				/>
       
+			 	<DataTable rows={[]} columns={[]}/>
       </main>
     </div>
   );
