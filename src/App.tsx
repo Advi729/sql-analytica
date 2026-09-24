@@ -4,10 +4,31 @@ import { DataTable } from "./components/DataTable";
 import { Dropzone } from "./components/Dropzone";
 import { QueryEditor } from "./components/QueryEditor";
 import { TableList } from "./components/TableList";
+import { useDuckDB } from "./useDuckDB";
 
 function App() {
+	const {
+		ready,
+		initError,
+		tables,
+		result,
+		queryError,
+		isQuerying,
+		loadCSV,
+		runQuery,
+	} = useDuckDB();
+
 	const [sql, setSql] = useState<string>("");
 	const [activeView, setActiveView] = useState<"table" | "chart">("table");
+
+	if (initError) {
+		return (
+			<div className="init-error">
+				<h2>Failed to initialise DuckDB</h2>
+				<pre>{initError}</pre>
+			</div>
+		);
+	}
 
 	return (
 		<div className="layout">
@@ -19,27 +40,35 @@ function App() {
 				<span className="header-tagline">
 					SQL analytics in browser - powered by DuckDB-WASM
 				</span>
+				{!ready && <span className="header-status">Loading DuckDB...</span>}
 			</header>
 
 			<main className="content">
-				<Dropzone onFile={(files) => console.log(files)} />
+				<Dropzone onFile={loadCSV} disabled={!ready} />
 
+				{tables.length > 0 && 
 				<TableList
-					tables={[]}
-					onSelect={(name) => setSql(`SELECT *\nFROM "${name}"\nLIMIT 10`)}
+					tables={tables}
+					onSelect={(name) => setSql(`SELECT *\nFROM "${name}"\nLIMIT 10;`)}
 				/>
+				}
 
 				<QueryEditor
 					sql={sql}
 					onChange={setSql}
-					onRun={() => console.log("Run query")}
-					isRunning={false}
-					disabled={false}
+					onRun={() => runQuery(sql)}
+					isRunning={isQuerying}
+					disabled={!ready}
 				/>
 
+				{queryError && <div className="error-banner">{queryError}</div>}
+
+				{result && (
 				<section className="results">
 					<div className="results-header">
-						<span className="results-meta">{/* Display query metadata */}</span>
+						<span className="results-meta">
+							{result.rowCount.toLocaleString()} row{result.rowCount !== 1 ? "s" : ""} - {result.durationMs} ms
+						</span>
 						<div className="results-tab">
 							<button
 								type="button"
@@ -59,11 +88,13 @@ function App() {
 						</div>
 					</div>
 					{activeView === "table" ? (
-						<DataTable rows={[]} columns={[]} />
+						<DataTable rows={result.rows} columns={result.columns} />
 					) : (
-						<ChartView rows={[]} columns={[]} />
+						<ChartView rows={result.rows} columns={result.columns} />
 					)}
 				</section>
+				)}
+
 			</main>
 		</div>
 	);
