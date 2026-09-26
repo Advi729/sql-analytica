@@ -34,7 +34,7 @@ export function QueryEditor({
 				onKeyDown={handleKeyDown}
 				rows={6}
 				spellCheck={false}
-				placeholder="SELECT * FROM your_table LIMIT 100"
+				placeholder="SELECT * FROM your_table LIMIT 15;"
 				disabled={disabled}
 			/>
 			<div className="editor-footer">

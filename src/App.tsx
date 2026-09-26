@@ -34,7 +34,7 @@ function App() {
 		<div className="layout">
 			<header className="header">
 				<div className="header-brand">
-					<span className="header-logo">◆</span>
+					<i className="fi fi-rr-dashboard-monitor header-logo"></i>
 					<span className="header-title">SQL Analytica</span>
 				</div>
 				<span className="header-tagline">
@@ -46,12 +46,12 @@ function App() {
 			<main className="content">
 				<Dropzone onFile={loadCSV} disabled={!ready} />
 
-				{tables.length > 0 && 
-				<TableList
-					tables={tables}
-					onSelect={(name) => setSql(`SELECT *\nFROM "${name}"\nLIMIT 10;`)}
-				/>
-				}
+				{tables.length > 0 && (
+					<TableList
+						tables={tables}
+						onSelect={(name) => setSql(`SELECT *\nFROM "${name}"\nLIMIT 10;`)}
+					/>
+				)}
 
 				<QueryEditor
 					sql={sql}
@@ -64,37 +64,37 @@ function App() {
 				{queryError && <div className="error-banner">{queryError}</div>}
 
 				{result && (
-				<section className="results">
-					<div className="results-header">
-						<span className="results-meta">
-							{result.rowCount.toLocaleString()} row{result.rowCount !== 1 ? "s" : ""} - {result.durationMs} ms
-						</span>
-						<div className="results-tab">
-							<button
-								type="button"
-								className={`tab${activeView === "table" ? " tab--active" : ""}`}
-								onClick={() => setActiveView("table")}
-							>
-								Table
-							</button>
+					<section className="results">
+						<div className="results-header">
+							<span className="results-meta">
+								{result.rowCount.toLocaleString()} row
+								{result.rowCount !== 1 ? "s" : ""} - {result.durationMs} ms
+							</span>
+							<div className="results-tab">
+								<button
+									type="button"
+									className={`tab${activeView === "table" ? " tab--active" : ""}`}
+									onClick={() => setActiveView("table")}
+								>
+									Table
+								</button>
 
-							<button
-								type="button"
-								className={`tab${activeView === "chart" ? " tab--active" : ""}`}
-								onClick={() => setActiveView("chart")}
-							>
-								Chart
-							</button>
+								<button
+									type="button"
+									className={`tab${activeView === "chart" ? " tab--active" : ""}`}
+									onClick={() => setActiveView("chart")}
+								>
+									Chart
+								</button>
+							</div>
 						</div>
-					</div>
-					{activeView === "table" ? (
-						<DataTable rows={result.rows} columns={result.columns} />
-					) : (
-						<ChartView rows={result.rows} columns={result.columns} />
-					)}
-				</section>
+						{activeView === "table" ? (
+							<DataTable rows={result.rows} columns={result.columns} />
+						) : (
+							<ChartView rows={result.rows} columns={result.columns} />
+						)}
+					</section>
 				)}
-
 			</main>
 		</div>
 	);
