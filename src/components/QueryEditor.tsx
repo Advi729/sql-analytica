@@ -10,6 +10,7 @@ import {
 	lineNumbers,
 } from "@codemirror/view";
 import { useEffect, useRef } from "react";
+import { format } from "sql-formatter";
 
 interface Props {
 	sqlQuery: string;
@@ -60,6 +61,40 @@ export function QueryEditor({
 					return true;
 				},
 			},
+			{
+				key: "Mod-q",
+				run: (view) => {
+					const currentContent = view.state.doc.toString();
+
+					// Skip running on empty lines or unmodified setup templates
+					if (!currentContent || currentContent === DEFAULT_TEMPLATE)
+						return true;
+
+					try {
+						// 3. Run the robust SQL text beautifier configuration rules
+						const formattedContent = format(currentContent, {
+							language: "sql",
+							tabWidth: 2,
+							keywordCase: "upper", // Auto-capitalize SELECT, FROM, JOIN, etc.
+							useTabs: false,
+						});
+
+						// Replace the full document text smoothly
+						view.dispatch({
+							changes: {
+								from: 0,
+								to: currentContent.length,
+								insert: formattedContent,
+							},
+							// Place the cursor at the end of the newly formatted statement block
+							selection: { anchor: formattedContent.length },
+						});
+					} catch (error) {
+						console.error("SQL formatting failed:", error);
+					}
+					return true;
+				},
+			},
 			...defaultKeymap,
 			indentWithTab,
 		]);
@@ -93,14 +128,14 @@ export function QueryEditor({
 				EditorView.theme({
 					"&": {
 						fontSize: "13px",
-						minHeight: "160px",
+						height: "240px",
 						backgroundColor: "#07121f",
 					},
 
 					".cm-scroller": {
 						fontFamily:
 							'"Geist Mono", "SF Mono", "Monolisa", "Cascadia Code", monospace',
-
+						height: "100%",
 						overflow: "auto",
 					},
 
@@ -222,8 +257,9 @@ export function QueryEditor({
 			<div className="editor-footer">
 				<div className="editor-footer-info">
 					<span className="editor-shortcut">⌘+↵ / Ctrl+↵</span>
-
 					<span className="editor-hint">Run query</span>
+					<span className="editor-shortcut">⌘+q / Ctrl+q</span>
+					<span className="editor-hint">Auto-format</span>
 				</div>
 
 				<button

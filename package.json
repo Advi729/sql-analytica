@@ -24,7 +24,8 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "react-dropzone": "20.1.1",
-    "recharts": "3.10.1"
+    "recharts": "3.10.1",
+    "sql-formatter": "^15.9.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.11",
