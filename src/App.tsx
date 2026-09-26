@@ -18,7 +18,7 @@ function App() {
 		runQuery,
 	} = useDuckDB();
 
-	const [sql, setSql] = useState<string>("");
+	const [sqlQuery, setSqlQuery] = useState<string>("");
 	const [activeView, setActiveView] = useState<"table" | "chart">("table");
 
 	if (initError) {
@@ -49,14 +49,16 @@ function App() {
 				{tables.length > 0 && (
 					<TableList
 						tables={tables}
-						onSelect={(name) => setSql(`SELECT *\nFROM "${name}"\nLIMIT 10;`)}
+						onSelect={(name) =>
+							setSqlQuery(`SELECT *\nFROM "${name}"\nLIMIT 10;`)
+						}
 					/>
 				)}
 
 				<QueryEditor
-					sql={sql}
-					onChange={setSql}
-					onRun={() => runQuery(sql)}
+					sqlQuery={sqlQuery}
+					onChange={setSqlQuery}
+					onRun={() => runQuery(sqlQuery)}
 					isRunning={isQuerying}
 					disabled={!ready}
 				/>
