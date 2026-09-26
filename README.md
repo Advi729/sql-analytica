@@ -24,6 +24,7 @@ The application provides a clean SQL editor with syntax highlighting, query exec
   - Run queries using the `Run` button
   - Keyboard shortcut support
   - `Ctrl + Enter` / `⌘ + Enter` to execute
+  - `Ctrl + Q` / `⌘ + Q` to auto-format
 
 - 📊 **Query Results**
   - Display query results in a structured table and chart
@@ -38,9 +39,7 @@ The application provides a clean SQL editor with syntax highlighting, query exec
 
 ## 🖥️ Preview
 
-> Add screenshots or a GIF of your application here.
-
-![SQL Analytics Preview](./screenshots/preview.png)
+<img width="1917" height="897" alt="preview" src="https://github.com/user-attachments/assets/6a4e0af3-9fe6-4f0c-8115-dd1a3b20d984" />
 
 ---
 
@@ -67,7 +66,7 @@ DuckDB-WASM brings DuckDB's analytical SQL engine into the browser through WebAs
 - Git
 - GitHub
 
-## 🏗️ How It Works
+## How It Works
 
 The application uses DuckDB-WASM as the SQL execution engine.
 
@@ -103,6 +102,6 @@ Instead of sending every query to a backend database server, the application ini
               │ Results Table   │
               | or Chart        |
               └─────────────────┘
----
+
 
 
