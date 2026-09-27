@@ -38,7 +38,7 @@ function App() {
 					<span className="header-title">SQL Analytica</span>
 				</div>
 				<span className="header-tagline">
-					SQL analytics in browser - powered by DuckDB-WASM
+					SQL analytics in browser using DuckDB-WASM
 				</span>
 				{!ready && <span className="header-status">Loading DuckDB...</span>}
 			</header>
