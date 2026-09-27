@@ -45,14 +45,14 @@ The application provides a clean SQL editor with syntax highlighting, query exec
 
 ## 🛠️ Tech Stack
 
-### Frontend
+| Layer | Component | Description |
+| :--- | :--- | :--- |
+| **Frontend Foundation** | React 18 + TypeScript | Component isolation pipelines and strict compiler type systems. |
+| **Build Tooling** | Vite | Rapid hot-module replacement (HMR) and ultra-lean production asset bundles. |
+| **Editor Shell** | CodeMirror 6 | Modular syntax tree parsing, programmatic state filtering. |
+| **Execution Core** | DuckDB-WASM | Columnar relational execution layout running within browser WebWorkers. |
+| **Linting & Quality** | Biome | Unified high-speed code syntax validation and formatting rules. |
 
-- **React**
-- **TypeScript**
-- **Vite**
-- **CodeMirror 6**
-- **HTML**
-- **CSS**
 
 ### SQL Engine
 
@@ -60,11 +60,6 @@ The application provides a clean SQL editor with syntax highlighting, query exec
 
 DuckDB-WASM brings DuckDB's analytical SQL engine into the browser through WebAssembly, allowing SQL queries to execute client-side without requiring a traditional database server.
 
-### Development
-
-- Biome
-- Git
-- GitHub
 
 ## How It Works
 
@@ -104,4 +99,61 @@ Instead of sending every query to a backend database server, the application ini
               └─────────────────┘
 
 
+
+
+               [ Raw Data Ingestion (.csv File Drop) ]
+                                 │
+                                 ▼
+                     ┌───────────────────────┐
+                     │   React Interface     │
+                     └───────────┬───────────┘
+                                 │
+                     ┌───────────▼───────────┐
+                     │ Custom CodeMirror IDE │ ◄── [ Ctrl + Q ] Format Pipeline
+                     └───────────┬───────────┘
+                                 │
+                     [ Clean SQL Query Vector ]
+                                 │
+                                 ▼
+                     ┌───────────────────────┐
+                     │   DuckDB-WASM Core    │ ◄── [ Client-Side Execution ]
+                     │ (Columnar Core Engine)│
+                     └───────────┬───────────┘
+                                 │
+                     [ Structured Row Arrays ]
+                                 │
+                                 ▼
+                     ┌───────────────────────┐
+                     │   Data Tables         │
+                     │   & Analytical Charts │
+                     └───────────────────────┘
+```
+
+## 🚀 Quickstart Local Installation
+
+### Prerequisites
+Ensure you have [Node.js](https://nodejs.org) installed on your machine (v18+ recommended).
+
+1. **Clone the Repository:**
+   ```bash
+   git clone [https://github.com](https://github.com/Advi729/sql-analytica.git)
+   cd sql-analytica
+   ```
+
+2. **Install Codebase Dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Launch the Local Development Workspace:**
+   ```bash
+   npm run dev
+   ```
+   Open the generated local address (typically `http://localhost:5173`) inside your browser window to interact with the environment.
+
+---
+
+## 📄 License
+
+Distributed under the MIT License. View the accompanying `LICENSE` file layout context for structural authorization parameters.
 
